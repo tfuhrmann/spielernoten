@@ -1,3 +1,6 @@
+# -*- coding: latin-1 -*-
+
+
 # script to read website information from anstoss-online.de
 # incl. login with user account
 # implemented in python3 (using windows, version 3.7)
