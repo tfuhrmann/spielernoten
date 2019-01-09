@@ -10,6 +10,8 @@
 # pip install lxml
 # pip install requests
 # pip install bs4
+# pip install numpy
+# pip install matplotlib
 
 
 # import relevant modules
@@ -17,6 +19,8 @@ import sys, os
 from lxml import html
 import requests
 from bs4 import BeautifulSoup
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 ###########################################################
@@ -25,7 +29,7 @@ team = 'FV Pacos de Ferreira' # Team of interest          #
 #team = 'DVD Santa Clara' # Team of interest              #
 year = 2018  # Year of interest (2018 for 2018/19 season) #
 match_day_start = 1 # Period of interest: start match day #
-match_day_end = 15 # end match day                        #
+match_day_end = 17 # end match day                        #
 username = 'Tommy Fury'                                   #
 password = 'mein_password'                                #
 ###########################################################
@@ -37,6 +41,39 @@ print('Hi. Ich kann Spielernoten aus Spielberichten von anstoss-online.de ausles
 print('Gerne berechne ich dir Durchschnittsnoten der Spieler aus dem Team %s fuer die\
  Spieltage %i bis %i der Saison %i/%i.' % (team, match_day_start, match_day_end, year, year+1))
 print('')
+
+
+# strength of player
+# find team url
+url_portugal2 = 'https://www.anstoss-online.de/?do=land;land_id=168;wettbewerb_st_id=240'
+page = requests.get(url_portugal2)
+soup = BeautifulSoup(page.content, 'html.parser')
+table = soup.find('table', attrs={'class':'daten_tabelle'})
+for row in table.find_all('tr')[1:]:
+    # dataset contains all records, i.e. Team1, -, Team2, Ergebnis, Spielbericht
+    dataset = list(td.get_text() for (td) in row.find_all('td'))
+    if dataset[0] == team:
+        # find the url for a particular team
+        link = row.find_all('a')
+        url_suffix = link[0].get('href')
+        url_team = 'https://www.anstoss-online.de/' + url_suffix[:-1] + ';detail=kader'
+    if dataset[2] == team:
+        # find the url for a particular team
+        link = row.find_all('a')
+        url_suffix = link[1].get('href')
+        url_team = 'https://www.anstoss-online.de/' + url_suffix[:-1] + ';detail=kader'
+
+
+players_strength = dict()
+page = requests.get(url_team)
+soup = BeautifulSoup(page.content, 'html.parser')
+table = soup.find('table', attrs={'class':'daten_tabelle'})
+for row in table.find_all('tr')[1:]:
+    # dataset contains all records, i.e. Position, Spieler, Stärke, Alter, ...
+    dataset = list(td.get_text() for (td) in row.find_all('td'))
+    player = dataset[1]
+    strength = dataset[2]
+    players_strength[player] = float(strength)
 
 
 # get the urls of match reports for one team for all match days of interest
@@ -120,13 +157,15 @@ for url in urls:
 print('')
 
 
+# calcaulte average grade and print to screen and file
+xdata = []
+ydata = []
 # filename of outputfile
 outfile = 'spielernoten_' + str(year) + '_' + str(match_day_start) + '-' + \
           str(match_day_end) + '.csv'
 os.remove(outfile) if os.path.exists(outfile) else None
 f = open(outfile, 'a')
 print('Spielername, Anzahl benotete Spiele, Durchschnittsnote', file=f)
-# loop over all players in dictionary to calculate average grade
 for key, value in player_dict.items():
     count = 0
     sum = 0
@@ -138,9 +177,28 @@ for key, value in player_dict.items():
     # avoid division by zero when calculating average grade
     if count > 0:
         average_grade = sum/count
+        # get stength of player
+        strength = players_strength.get(key)
         # print output to screen and to file
-        print('%s, %i benotete Spiele, Durchschnittsnote: %4.2f' % \
-        (key, count, average_grade))
+        print('%s, %i benotete Spiele, Durchschnittsnote: %4.2f, Stärke: %3.1f' % \
+        (key, count, average_grade, strength))
         print('%s, %i, %4.2f' % (key, count, average_grade), file=f)
+        # strength may be None if the player is not in the team anymore
+        if strength is not None:
+            xdata.append(strength)
+            ydata.append(average_grade)
 f.close()
 
+
+# create plot: strength vs. grade
+m,b = np.polyfit(np.array(xdata), np.array(ydata), 1)
+plt.plot(xdata,ydata,'bo', ms=4)
+plt.plot(np.arange(12), m*np.arange(12)+b,'--r', lw=1)
+plt.axis([1, 9, 6, 1])
+plt.grid(True)
+plt.xlabel('Stärke')
+plt.ylabel('Durchschnittsnote')
+textstr = 'Team: ' + team + '\n' + 'Zeitraum: ' + str(year) + ', ' + \
+str(match_day_start) + '. bis ' + str(match_day_end) + '. Spieltag'
+plt.text(1.3, 1.6, textstr, bbox=dict(facecolor='white', alpha=1.0))
+plt.show()
