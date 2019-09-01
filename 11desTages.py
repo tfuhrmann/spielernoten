@@ -4,7 +4,14 @@
 # script to read website information from anstoss-online.de
 # incl. login with user account
 # implemented in python3 (using windows, version 3.7)
-# Author: Thomas Fuhrmann, December 2018
+# Author: Thomas Fuhrmann, August 2019
+
+# this script requests three command line arguments:
+# league, year, match_day, to run use e.g.:
+# 11desTages.py 2 2019 5
+
+# the image file soccer_field.jpg is used as background image
+# make sure the file is placed in the same directory as the script
 
 # the following modules need to be installed first by executing:
 # pip install lxml
@@ -12,6 +19,7 @@
 # pip install bs4
 # pip install numpy
 # pip install matplotlib
+# pip install Pillow
 
 
 # import relevant modules
@@ -41,11 +49,14 @@ password = 'mein_passwort'                                #
 
 
 # read variables from command line: league year match_day
-# e.g. 11desTages.py 2 2019 5
+if len(sys.argv) < 4:
+    print('Bitte 3 Parameter angeben: Liga, Jahr und Spieltag, z.B.:')
+    print('11desTages.py 2 2019 5')
+    sys.exit()
+
 league = int(sys.argv[1])
 year = int(sys.argv[2])
 match_day = int(sys.argv[3])
-
 
 if league == 1:
     league_id = 11
@@ -517,4 +528,3 @@ draw.text((924, 751),'Background Image: Freepic.com',(255,255,255),align='center
 savename = str(league) + 'a/11_des_Tages_Spieltag' + str(match_day) + '.jpg'
 img.save(savename)
 print('')
-
