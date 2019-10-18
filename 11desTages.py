@@ -311,8 +311,8 @@ if not os.path.exists(dirname):
 # output file
 savefile = str(league) + 'a/11_des_Tages_Spieltag' + str(match_day) + '.txt'
 text_file = open(savefile, "w")
-text_file.write('Name                           Team                         Position Note Stärke Alter\n')
-text_file.write('--------------------------------------------------------------------------------------\n')
+text_file.write('Name                           Team                         Position Note Tore Stärke Alter\n')
+text_file.write('-------------------------------------------------------------------------------------------\n')
 
 # input image
 img = Image.open("soccer_field.jpg")
@@ -334,8 +334,8 @@ def draw_text(bbox, text):
 print('Tor')
 text_file.write('Tor:\n')
 print(goalie)
-text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-(goalie[0], goalie[1], goalie[2], goalie[3], goalie[4], goalie[5]))
+text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+(goalie[0], goalie[1], goalie[2], goalie[3], goalie[6], goalie[4], goalie[5]))
 text = goalie[0] + ' (' + str(goalie[3]) + ')\n' + goalie[1]
 bounding_box = [448, 650, 686, 700]
 draw_text(bounding_box, text)
@@ -348,8 +348,8 @@ if countD == 0:
     print(defenders[2])
     i = 0
     while i < 3:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (defenders[i][0], defenders[i][1], defenders[i][2], defenders[i][3], defenders[i][4], defenders[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (defenders[i][0], defenders[i][1], defenders[i][2], defenders[i][3], defenders[i][6], defenders[i][4], defenders[i][5]))
         i = i + 1
     # print defense 3
     text = defenders[0][0] + ' (' + str(defenders[0][3]) + ')\n' + defenders[0][1]
@@ -368,8 +368,8 @@ if countD == 1:
     print(defenders[3])
     i = 0
     while i < 4:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (defenders[i][0], defenders[i][1], defenders[i][2], defenders[i][3], defenders[i][4], defenders[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (defenders[i][0], defenders[i][1], defenders[i][2], defenders[i][3], defenders[i][6], defenders[i][4], defenders[i][5]))
         i = i + 1
     # print defense 4
     text = defenders[0][0] + ' (' + str(defenders[0][3]) + ')\n' + defenders[0][1]
@@ -392,8 +392,8 @@ if countD == 2:
     print(defenders[4])
     i = 0
     while i < 5:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (defenders[i][0], defenders[i][1], defenders[i][2], defenders[i][3], defenders[i][4], defenders[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i   %2i\n' % \
+        (defenders[i][0], defenders[i][1], defenders[i][2], defenders[i][3], defenders[i][6], defenders[i][4], defenders[i][5]))
         i = i + 1
     # print defense 5
     text = defenders[0][0] + ' (' + str(defenders[0][3]) + ')\n' + defenders[0][1]
@@ -420,8 +420,8 @@ if countM == 0:
     print(midfielders[2])
     i = 0
     while i < 3:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (midfielders[i][0], midfielders[i][1], midfielders[i][2], midfielders[i][3], midfielders[i][4], midfielders[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (midfielders[i][0], midfielders[i][1], midfielders[i][2], midfielders[i][3], midfielders[i][6], midfielders[i][4], midfielders[i][5]))
         i = i + 1
     # print midfield 3
     text = midfielders[0][0] + ' (' + str(midfielders[0][3]) + ')\n' + midfielders[0][1]
@@ -440,8 +440,8 @@ if countM == 1:
     print(midfielders[3])
     i = 0
     while i < 4:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (midfielders[i][0], midfielders[i][1], midfielders[i][2], midfielders[i][3], midfielders[i][4], midfielders[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (midfielders[i][0], midfielders[i][1], midfielders[i][2], midfielders[i][3], midfielders[i][6], midfielders[i][4], midfielders[i][5]))
         i = i + 1
     # print midfield 4
     text = midfielders[0][0] + ' (' + str(midfielders[0][3]) + ')\n' + midfielders[0][1]
@@ -464,8 +464,8 @@ if countM == 2:
     print(midfielders[4])
     i = 0
     while i < 5:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (midfielders[i][0], midfielders[i][1], midfielders[i][2], midfielders[i][3], midfielders[i][4], midfielders[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (midfielders[i][0], midfielders[i][1], midfielders[i][2], midfielders[i][3], midfielders[i][6], midfielders[i][4], midfielders[i][5]))
         i = i + 1
     # print midfield 5
     text = midfielders[0][0] + ' (' + str(midfielders[0][3]) + ')\n' + midfielders[0][1]
@@ -487,8 +487,8 @@ print('Sturm')
 text_file.write('Sturm:\n')
 if countS == 0:
     print(strikers[0])
-    text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-    (strikers[0][0], strikers[0][1], strikers[0][2], strikers[0][3], strikers[0][4], strikers[0][5]))
+    text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+    (strikers[0][0], strikers[0][1], strikers[0][2], strikers[0][3], strikers[0][6], strikers[0][4], strikers[0][5]))
     # print offense 1
     text = strikers[0][0] + ' (' + str(strikers[0][3]) + ')\n' + strikers[0][1]
     bounding_box = [448, 90, 686, 140]
@@ -498,8 +498,8 @@ if countS == 1:
     print(strikers[1])
     i = 0
     while i < 2:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (strikers[i][0], strikers[i][1], strikers[i][2], strikers[i][3], strikers[i][4], strikers[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (strikers[i][0], strikers[i][1], strikers[i][2], strikers[i][3], striker[i][6], strikers[i][4], strikers[i][5]))
         i = i + 1
     # print offense 2
     text = strikers[0][0] + ' (' + str(strikers[0][3]) + ')\n' + strikers[0][1]
@@ -514,8 +514,8 @@ if countS == 2:
     print(strikers[2])
     i = 0
     while i < 3:
-        text_file.write('%-30s %-30s %-4s    %3.1f  %4.1f   %2i\n' % \
-        (strikers[i][0], strikers[i][1], strikers[i][2], strikers[i][3], strikers[i][4], strikers[i][5]))
+        text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
+        (strikers[i][0], strikers[i][1], strikers[i][2], strikers[i][3], strikers[i][6], strikers[i][4], strikers[i][5]))
         i = i + 1
     # print offense 3
     text = strikers[0][0] + ' (' + str(strikers[0][3]) + ')\n' + strikers[0][1]
