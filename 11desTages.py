@@ -23,7 +23,7 @@
 
 
 # import relevant modules
-import sys, os
+import sys, os, re
 from lxml import html
 import requests
 from bs4 import BeautifulSoup
@@ -149,6 +149,17 @@ for url in urls:
 	headers = dict(referer = url)
     )
     soup = BeautifulSoup(result.content, 'html.parser')
+    # read all goalies
+    goalies = {}
+    ticker_script_tag = soup.find_all('script')[1]
+    ticker_content = re.compile('var steno = (.*);').search(ticker_script_tag.string)
+    ticker_content_soup = BeautifulSoup(ticker_content.group(1), "html.parser")
+    for img in ticker_content_soup.find_all('img'):
+        goalie = img.next_element.next_element.string
+        if goalie not in goalies:
+            goalies[goalie] = 1
+        else:
+            goalies[goalie] += 1
     # match reports contain two data tables with the name daten_tabelle,
     # one for each team, team_idx is used to select the right one
     teams_line = soup.find('tr')
@@ -172,7 +183,7 @@ for url in urls:
                     age = row[3]
                     break
             # for player, grade, position, strength, age in zip(players, grades, positions, strenghts, ages):
-            player_list.append([player, team1, position, float(grade), strength, age])
+            player_list.append([player, team1, position, float(grade), strength, age, goalies[player] if player in goalies else 0])
             #player_dict.setdefault(player, []).append([float(grade), position, team1, strength, age])
     # read all rows of table for 2nd team
     for row in tables[1].find_all("tr")[1:]:
@@ -189,13 +200,13 @@ for url in urls:
                     age = row[3]
                     break
             # save player name and corresponding grade to dictionary
-            player_list.append([player, team2, position, float(grade), strength, age])
+            player_list.append([player, team2, position, float(grade), strength, age, goalies[player] if player in goalies else 0])
             #player_dict.setdefault(player, []).append([float(grade), position, team2, strength, age])
 print('')
 
 
-# sort players according to grade, then strength, then age
-player_list.sort(key=lambda x: (x[3], x[4], x[5]))
+# sort players according to grade, then goals, then strength, then age
+player_list.sort(key=lambda x: (x[3], -x[6], x[4], x[5]))
 
 
 print('')
@@ -256,8 +267,8 @@ three_of_six.append(midfielders[3])
 three_of_six.append(midfielders[4])
 three_of_six.append(strikers[1])
 three_of_six.append(strikers[2])
-# sort players according to grade, then strength, then age
-three_of_six.sort(key=lambda x: (x[3], x[4], x[5]))
+# sort players according to grade, goals, then strength, then age
+three_of_six.sort(key=lambda x: (x[3], -x[6], x[4], x[5]))
 print('')
 
 
