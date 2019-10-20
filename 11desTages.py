@@ -427,10 +427,10 @@ if countM == 0:
     text = midfielders[0][0] + ' (' + str(midfielders[0][3]) + ')\n' + midfielders[0][1]
     bounding_box = [148, 270, 386, 320]
     draw_text(bounding_box, text)
-    text = midfielders[0][0] + ' (' + str(midfielders[0][3]) + ')\n' + midfielders[0][1]
+    text = midfielders[1][0] + ' (' + str(midfielders[1][3]) + ')\n' + midfielders[1][1]
     bounding_box = [448, 270, 686, 320]
     draw_text(bounding_box, text)
-    text = midfielders[0][0] + ' (' + str(midfielders[0][3]) + ')\n' + midfielders[0][1]
+    text = midfielders[2][0] + ' (' + str(midfielders[2][3]) + ')\n' + midfielders[2][1]
     bounding_box = [748, 270, 986, 320]
     draw_text(bounding_box, text)
 if countM == 1:
