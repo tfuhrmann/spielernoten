@@ -499,7 +499,7 @@ if countS == 1:
     i = 0
     while i < 2:
         text_file.write('%-30s %-30s %-4s    %3.1f  %2i   %4.1f   %2i\n' % \
-        (strikers[i][0], strikers[i][1], strikers[i][2], strikers[i][3], striker[i][6], strikers[i][4], strikers[i][5]))
+        (strikers[i][0], strikers[i][1], strikers[i][2], strikers[i][3], strikers[i][6], strikers[i][4], strikers[i][5]))
         i = i + 1
     # print offense 2
     text = strikers[0][0] + ' (' + str(strikers[0][3]) + ')\n' + strikers[0][1]
