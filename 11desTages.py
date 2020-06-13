@@ -97,7 +97,7 @@ for row in table1.find_all('tr')[1:]:
     soup = BeautifulSoup(page.content, 'html.parser')
     table = soup.find('table', attrs={'class':'daten_tabelle'})
     for row in table.find_all('tr')[1:]:
-        # dataset contains all records, i.e. Position, Spieler, St‰rke, Alter, ...
+        # dataset contains all records, i.e. Position, Spieler, St√§rke, Alter, ...
         dataset1 = list(td.get_text() for (td) in row.find_all('td'))
         player = dataset1[1]
         strength = float(dataset1[2])
@@ -111,7 +111,7 @@ for row in table1.find_all('tr')[1:]:
     soup = BeautifulSoup(page.content, 'html.parser')
     table = soup.find('table', attrs={'class':'daten_tabelle'})
     for row in table.find_all('tr')[1:]:
-        # dataset contains all records, i.e. Position, Spieler, St‰rke, Alter, ...
+        # dataset contains all records, i.e. Position, Spieler, St√§rke, Alter, ...
         dataset2 = list(td.get_text() for (td) in row.find_all('td'))
         player = dataset2[1]
         strength = float(dataset2[2])
@@ -155,11 +155,12 @@ for url in urls:
     ticker_content = re.compile('var steno = (.*);').search(ticker_script_tag.string)
     ticker_content_soup = BeautifulSoup(ticker_content.group(1), "html.parser")
     for img in ticker_content_soup.find_all('img'):
-        goalie = img.next_element.next_element.string
-        if goalie not in goalies:
-            goalies[goalie] = 1
-        else:
-            goalies[goalie] += 1
+        if 'tor.png' in img['src']:
+            goalie = img.next_element.next_element.string
+            if goalie not in goalies:
+                goalies[goalie] = 1
+            else:
+                goalies[goalie] += 1
     # match reports contain two data tables with the name daten_tabelle,
     # one for each team, team_idx is used to select the right one
     teams_line = soup.find('tr')
@@ -311,7 +312,7 @@ if not os.path.exists(dirname):
 # output file
 savefile = str(league) + 'a/11_des_Tages_Spieltag' + str(match_day) + '.txt'
 text_file = open(savefile, "w")
-text_file.write('Name                           Team                         Position Note Tore St‰rke Alter\n')
+text_file.write('Name                           Team                         Position Note Tore St√§rke Alter\n')
 text_file.write('-------------------------------------------------------------------------------------------\n')
 
 # input image
